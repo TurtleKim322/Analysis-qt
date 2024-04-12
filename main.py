@@ -2,6 +2,11 @@ import numpy as np
 from PyQt6.QtWidgets import QMainWindow, QApplication
 from PyQt6.QtCore import QEvent, Qt
 from PyQt6 import QtCore
+from PyQt6 import QtWidgets, QtGui
+from PyQt6.QtWidgets import QApplication, QMainWindow, QTreeWidget, QTreeWidgetItem, QMenu
+from PyQt6.QtWidgets import *
+from PyQt6.QtGui import *
+from PyQt6.QtGui import QIcon,QAction
 import pandas as pd
 from datetime import datetime, timedelta
 from PyQt6.QtGui import QIcon,QAction
@@ -19,6 +24,21 @@ class WindowClass(QMainWindow, form_class) :
     def __init__(self) :
         super().__init__()
         self.setupUi(self)
+        self.mdiArea.setViewMode(QMdiArea.ViewMode.SubWindowView)
+        self.mdiArea.setTabPosition(QTabWidget.TabPosition.North)
+        self.mdiArea.setTabsMovable(True)
+        self.mdiArea.setTabsClosable(True)
+
+
+    def closeEvent(self, event):
+        result = QMessageBox.question(self, "Confirm Exit",
+                                      "Are you sure you want to exit ?",
+                                      QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                                      QMessageBox.StandardButton.No)
+        if result == QMessageBox.StandardButton.Yes:
+            event.accept()
+        else:
+            event.ignore()
 
 
 if __name__ == "__main__" :
