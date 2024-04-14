@@ -11,6 +11,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from PyQt6.QtGui import QIcon,QAction
 from PyQt6 import uic
+import qtawesome as qta
 import os, io,sys
 
 
@@ -29,6 +30,17 @@ class WindowClass(QMainWindow, form_class) :
         self.mdiArea.setTabsMovable(True)
         self.mdiArea.setTabsClosable(True)
 
+        fileToolBar = self.addToolBar('파일')
+        self.fileAction = QAction(qta.icon('ei.folder-open',size=16,color='#fd0'),'&파일열기',self)
+        self.trainAction = QAction(qta.icon('ei.file-new', size = 16, color ='#000000'),'&좌표 파일',self )
+        self.mapclearAction = QAction(qta.icon('mdi.eraser', size = 16, color ='#FF75AE'),'&지도 지우기',self )
+        self.fileAction.triggered.connect(self.file_open)
+        self.trainAction.triggered.connect(self.train_open)
+        self.mapclearAction.triggered.connect(self.map_clear)
+        fileToolBar.addAction(self.fileAction)
+        fileToolBar.addAction(self.trainAction)
+        fileToolBar.addAction(self.mapclearAction)
+
 
     def closeEvent(self, event):
         result = QMessageBox.question(self, "Confirm Exit",
@@ -43,31 +55,7 @@ class WindowClass(QMainWindow, form_class) :
 
 if __name__ == "__main__" :
     app = QApplication(sys.argv)
-    if 1 : 
-        app.setStyle('Fusion')
-    else :
-        css ="""
-         QToolTip {
-                border: 1px solid darkkhaki;
-                padding: 1px;
-                border-radius: 1px;
-                opacity: 200;
-                color : white;
-                }
-            QMenuBar::item {
-                padding: 10px 4px;
-                background: transparent;
-                border-radius: 4px;
-            }
-            /*
-            QMenu::icon {
-                padding-left: 20px;
-            }
-            */
-            QMenu::item {
-                padding-left: 30px;
-            }
-        """
+    app.setStyle('Fusion')
     myWindow = WindowClass()
     myWindow.showMaximized()
     app.exec()
